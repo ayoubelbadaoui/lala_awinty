@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1046010826990",
+    "project_id": "lalaawinty",
+    "storage_bucket": "lalaawinty.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046010826990:android:2dcbceebafcc64f383e3ff",
+        "android_client_info": {
+          "package_name": "com.ayoubelbd.lala_awinty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046010826990-4gg2oiq2vj0lnflq1pt2si5ol9ig0olr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ayoubelbd.lala_awinty",
+            "certificate_hash": "25df07159610511b12bbdf928d44fa7b0f9e053b"
+          }
+        },
+        {
+          "client_id": "1046010826990-e58rd50kfal4nsnnlcaukcde1heouk37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1hv8z-IOu-BBg3fIteYfwb6sC6PeP5zQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046010826990-e58rd50kfal4nsnnlcaukcde1heouk37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
