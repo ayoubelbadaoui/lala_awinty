@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+
+import 'auth_screen/welcome_auth_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   static String id = 'welcome_screen';
@@ -12,12 +15,12 @@ class _IntroScreenState extends State<IntroScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    print('login/sign up screen');
+    Get.to(WelcomeAuthScreen());
   }
 
   Widget _buildImage(String assetName) {
     return Align(
-      child: Image.asset('assets/introImages/$assetName.jpg',
+      child: Image.asset('assets/$assetName.jpg',
           width: MediaQuery.of(context).size.width * .58),
       alignment: Alignment.bottomCenter,
     );
