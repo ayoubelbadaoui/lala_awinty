@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lala_awinty/constants/firebase.dart';
 import 'package:lala_awinty/widgets/loading_widget.dart';
 
-FirebaseAuth auth = FirebaseAuth.instance;
 
 class FireBaseInitializationWidget extends StatelessWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();

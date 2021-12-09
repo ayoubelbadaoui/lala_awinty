@@ -24,4 +24,11 @@ class UserModel {
       'email': email,
     };
   }
+
+  final usersRef = FirebaseFirestore.instance
+      .collection('users')
+      .withConverter<UserModel>(
+        fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
+        toFirestore: (user, _) => user.toJson(),
+      );
 }
