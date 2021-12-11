@@ -47,8 +47,8 @@ class SignInScreen extends StatelessWidget {
                         Icons.email,
                         color: Colors.black,
                       ),
-                      validator: (String email) {
-                        if (email.isEmpty || !email.isEmail) {
+                      validator: (String? email) {
+                        if (email!.isEmpty || !email.isEmail) {
                           return 'Merci d\'enter votre email valid';
                         }
                       },
@@ -57,13 +57,15 @@ class SignInScreen extends StatelessWidget {
                       height: Get.height * .015,
                     ),
                     AppInput(
+                      controller: authController.password,
                       hint: 'Mot de passe',
+                      obscureText: true,
                       prefixIcon: const Icon(
                         Icons.lock,
                         color: Colors.black,
                       ),
-                      validator: (String pass) {
-                        if (pass.isEmpty) {
+                      validator: (String? pass) {
+                        if (pass!.isEmpty) {
                           return 'Merci d\'enter un votre password';
                         }
                       },
@@ -72,7 +74,14 @@ class SignInScreen extends StatelessWidget {
                       height: Get.height * .022,
                     ),
                     AppPrimaryButton(
-                      onPressed: null,
+                      onPressed: () async {
+                        //this to hide the keyboard
+                        FocusScope.of(context).requestFocus(FocusNode());
+
+                        if (_formKey.currentState!.validate()) {
+                          authController.signIn(context);
+                        }
+                      },
                       text: 'Se connecter',
                       width: Get.width,
                     )

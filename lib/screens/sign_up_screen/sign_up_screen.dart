@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lala_awinty/constants/controllers.dart';
+import 'package:lala_awinty/helpers/showLoading.dart';
 import 'package:lala_awinty/widgets/app_input.dart';
 import 'package:lala_awinty/widgets/app_logo.dart';
 import 'package:lala_awinty/widgets/primary_button.dart';
@@ -62,7 +64,7 @@ class SignUpScreen extends StatelessWidget {
                         color: Colors.black,
                       ),
                       validator: (String? email) {
-                        if (email!.isEmpty) {
+                        if (email!.isEmpty || !email.isEmail) {
                           return 'Merci d\'ecrire votre email';
                         }
                       },
@@ -74,6 +76,7 @@ class SignUpScreen extends StatelessWidget {
                     AppInput(
                       controller: authController.password,
                       hint: 'Mot de passe',
+                      obscureText: true,
                       prefixIcon: const Icon(
                         Icons.lock,
                         color: Colors.black,
@@ -89,8 +92,11 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     AppPrimaryButton(
                       onPressed: () async {
+                        //this to hide the keyboard
+                        FocusScope.of(context).requestFocus(FocusNode());
+
                         if (_formKey.currentState!.validate()) {
-                          authController.signUp();
+                          authController.signUp(context);
                         }
                       },
                       text: 'S\'inscrire',

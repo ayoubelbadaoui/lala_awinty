@@ -15,6 +15,9 @@ ThemeData appTheme(BuildContext context) => ThemeData(
       fontWeight: FontWeight.w400
     ),
   ),
+  appBarTheme: AppBarTheme(
+    backgroundColor: primaryColor
+  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor: MaterialStateProperty.all(primaryColor),

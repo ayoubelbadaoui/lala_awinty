@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:lala_awinty/constants/firebase.dart';
 import 'package:lala_awinty/core/firebase_init.dart';
 import 'package:lala_awinty/helpers/showLoading.dart';
+import 'package:lala_awinty/main.dart';
 import 'package:lala_awinty/models/user.dart';
 import 'package:lala_awinty/screens/auth_screen/welcome_auth_screen.dart';
 import 'package:lala_awinty/screens/home_screen/home_screen.dart';
-
-import '../main.dart';
+import 'package:lala_awinty/screens/introduction_screen.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -30,13 +30,13 @@ class AuthController extends GetxController {
 
   _setInitialScreen(User? user) {
     if (user == null) {
-      Get.offAll(() => MyApp());
+      Get.offAll(() => IntroScreen());
     } else {
-      Get.offAll(() => HomeScreen());
+      Get.offAll(() => const HomeScreen());
     }
   }
 
-  void signIn() async {
+  Future signIn(BuildContext context) async {
     try {
       showLoading();
       await auth
@@ -44,36 +44,38 @@ class AuthController extends GetxController {
               email: email.text.trim(), password: password.text.trim())
           .then((result) {
         String _userId = result.user!.uid;
-        //_initializeUserModel(_userId);
+        _initializeUserModel(_userId);
         _clearControllers();
       });
     } catch (e) {
       debugPrint(e.toString());
-      Get.snackbar("Sign In Failed", "Try again");
+      Get.snackbar("Sign In Failed", "${e.toString()}",
+          snackPosition: SnackPosition.BOTTOM);
+      Navigator.pop(context);
     }
   }
 
-  void signUp() async {
+  Future<void> signUp(BuildContext context) async {
     showLoading();
     try {
       await auth
           .createUserWithEmailAndPassword(
               email: email.text.trim(), password: password.text.trim())
-          .then((result) {
+          .then((result) async {
         String _userId = result.user!.uid;
-        _addUserToFirestore(_userId);
-        _initializeUserModel(_userId);
+        await _addUserToFirestore(_userId);
+        await _initializeUserModel(_userId);
         _clearControllers();
       });
     } catch (e) {
-      //debugPrint(e.toString());
+      debugPrint(e.toString());
       Get.snackbar("Sign In Failed", "${e.toString()}",
           snackPosition: SnackPosition.BOTTOM);
-      Get.back();
+      Navigator.pop(context);
     }
   }
 
-  void signOut() async {
+  Future<void> signOut() async {
     auth.signOut();
   }
 
@@ -84,6 +86,7 @@ class AuthController extends GetxController {
   }
 
   _initializeUserModel(String userId) async {
+    print('caleed $userId');
     userModel.value = await userModel.value.usersRef
         .doc(userId)
         .get()
