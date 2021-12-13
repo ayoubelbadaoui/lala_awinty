@@ -5,9 +5,12 @@ import 'package:lala_awinty/constants/controllers.dart';
 import 'package:lala_awinty/constants/firebase.dart';
 import 'package:lala_awinty/models/recommandation.dart';
 import 'package:lala_awinty/models/user.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class RecommandationsController extends GetxController {
+
   static RecommandationsController instance = Get.find();
+
 
 
   RecommandationMDL recommandationMDL = RecommandationMDL();
@@ -17,9 +20,9 @@ class RecommandationsController extends GetxController {
     return recommandationMDL.recommandationRef.where('user_id',isEqualTo: auth.currentUser!.uid).where('eat_type',isEqualTo: 'launch').snapshots().map((QuerySnapshot querySnapshot){
 
       List<RecommandationMDL> _recommandations = [];
-      querySnapshot.docs.forEach((DocumentSnapshot element) {
+      for (var element in querySnapshot.docs) {
         _recommandations.add(RecommandationMDL.fromDocumentSnapshot(element));
-      });
+      }
       return _recommandations;
     });
 
@@ -29,11 +32,11 @@ class RecommandationsController extends GetxController {
 
     return recommandationMDL.recommandationRef.where('user_id',isEqualTo: auth.currentUser!.uid).where('eat_type',isEqualTo: 'dinner').snapshots().map((QuerySnapshot querySnapshot){
 
-      List<RecommandationMDL> _recommandations = [];
-      querySnapshot.docs.forEach((DocumentSnapshot element) {
-        _recommandations.add(RecommandationMDL.fromDocumentSnapshot(element));
-      });
-      return _recommandations;
+      List<RecommandationMDL> _recommendations = [];
+      for (var element in querySnapshot.docs) {
+        _recommendations.add(RecommandationMDL.fromDocumentSnapshot(element));
+      }
+      return _recommendations;
     });
 
   }

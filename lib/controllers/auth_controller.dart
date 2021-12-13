@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -81,12 +82,11 @@ class AuthController extends GetxController {
 
   _addUserToFirestore(userID) async {
     await userModel.value.usersRef
-        .doc()
+        .doc(auth.currentUser!.uid)
         .set(UserModel(name: name.text.trim(), email: email.text.trim()));
   }
 
   _initializeUserModel(String userId) async {
-    print('caleed $userId');
     userModel.value = await userModel.value.usersRef
         .doc(userId)
         .get()
@@ -97,5 +97,9 @@ class AuthController extends GetxController {
     name.clear();
     email.clear();
     password.clear();
+  }
+
+  Future<bool> checkIfUserIsAdmin() async{
+    return await UserModel().usersRef.doc(auth.currentUser!.uid).get().then((snapshot) => snapshot.data()!.admin!);
   }
 }

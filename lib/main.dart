@@ -6,6 +6,8 @@ import 'package:lala_awinty/controllers/auth_controller.dart';
 import 'package:lala_awinty/controllers/recommandation_controller.dart';
 import 'constants/firebase.dart';
 import 'constants/theme.dart';
+import 'controllers/meal_controller.dart';
+import 'controllers/recommandation_flow_controller.dart';
 import 'core/firebase_init.dart';
 import 'screens/introduction_screen.dart';
 import 'widgets/loading_widget.dart';
@@ -16,6 +18,8 @@ void main() async {
     Get.put(AuthController());
   });
   Get.put(RecommandationsController());
+  Get.put(RecommandationFlowController());
+  Get.put(MealController());
   runApp(MyApp());
 }
 

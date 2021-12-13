@@ -8,13 +8,18 @@ class AppInput extends StatelessWidget {
   final validator;
   String? initialValue;
   bool? obscureText;
+  TextInputType? textInputType;
+  Widget? suffix;
   AppInput(
       {required this.hint,
       this.prefixIcon,
       this.controller,
       this.widthFactor,
       required this.validator,
-      this.initialValue,this.obscureText});
+      this.initialValue,this.obscureText,
+        this.textInputType,
+        this.suffix
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +28,7 @@ class AppInput extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         validator: validator,
+        keyboardType: textInputType??TextInputType.text,
         initialValue: initialValue,
         obscureText: obscureText??false,
         style: const TextStyle(
@@ -39,7 +45,8 @@ class AppInput extends StatelessWidget {
             hintText: hint ?? '',
             prefixIcon: prefixIcon,
             //suffix: obscureText! ?? IconButton(onPressed: null, icon: Icon(Icons.ten_k)),
-            fillColor: Color(0XFFDFDFDF),
+            suffix: suffix,
+            fillColor: const Color(0XFFDFDFDF),
             filled: true,
             contentPadding: const EdgeInsets.all(16),
             labelStyle: const TextStyle(color: Colors.red)),

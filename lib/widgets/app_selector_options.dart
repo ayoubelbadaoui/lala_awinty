@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:lala_awinty/constants/colors.dart';
 
 class AppSelectorOption extends StatefulWidget {
-  const AppSelectorOption({Key? key}) : super(key: key);
+  final List<String> items;
+
+  AppSelectorOption({required this.items});
 
   @override
   State<AppSelectorOption> createState() => _AppSelectorOptionState();
 }
 
 class _AppSelectorOptionState extends State<AppSelectorOption> {
-  String dropdownValue = '30-50';
+  String? dropdownValue;
+  @override
+  void initState() {
+    // TODO: implement initState
+    dropdownValue = widget.items.first;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +36,7 @@ class _AppSelectorOptionState extends State<AppSelectorOption> {
           dropdownValue = newValue!;
         });
       },
-      items: <String>['30-50', '50-70']
-          .map<DropdownMenuItem<String>>((String value) {
+      items: widget.items.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
