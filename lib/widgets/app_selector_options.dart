@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lala_awinty/constants/colors.dart';
+import 'package:lala_awinty/constants/controllers.dart';
 
 class AppSelectorOption extends StatefulWidget {
-  final List<String> items;
 
-  AppSelectorOption({required this.items});
+  final List<String> items;
+  String? storeValueOnChange;
+
+  AppSelectorOption({required this.items,this.storeValueOnChange});
 
   @override
   State<AppSelectorOption> createState() => _AppSelectorOptionState();
@@ -35,6 +38,13 @@ class _AppSelectorOptionState extends State<AppSelectorOption> {
         setState(() {
           dropdownValue = newValue!;
         });
+        if(widget.storeValueOnChange=='type_meal'){
+          mealController.typeMeal = newValue!;
+        }
+        else if(widget.storeValueOnChange=='budget_meal')
+          {
+            mealController.budgetMeal = newValue!;
+          }
       },
       items: widget.items.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(

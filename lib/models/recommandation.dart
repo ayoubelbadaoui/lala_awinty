@@ -8,12 +8,14 @@ class RecommandationMDL{
   String? priceRange;
   String? rating;
   String? timeToMake;
+  String? youtubeLink;
   Timestamp? at;
   String? id;
   String? photoURL;
   String? mealType;
+  String? description;
 
-  RecommandationMDL({this.mealType,this.id,this.at,this.priceRange,this.rating,this.timeToMake,this.title,this.photoURL});
+  RecommandationMDL({this.description,this.youtubeLink,this.mealType,this.id,this.at,this.priceRange,this.rating,this.timeToMake,this.title,this.photoURL});
 
 
   RecommandationMDL.fromJson(Map<String, Object?> json)
@@ -24,6 +26,8 @@ class RecommandationMDL{
     timeToMake: json['timeToMake']! as String,
     at: json['at']! as Timestamp,
     photoURL: json['photoURL']! as String,
+    youtubeLink: json['youtubeLink']! as String,
+    description: json['description']! as String,
   );
 
 
@@ -47,6 +51,7 @@ class RecommandationMDL{
       'rating': rating,
       'photoURL': photoURL,
       'timeToMake': timeToMake,
+      'description': description,
     };
   }
 

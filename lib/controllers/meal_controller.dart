@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -18,19 +16,24 @@ class MealController extends GetxController{
   Rx<String> obsImageTho ="".obs;
 
 
-  TextEditingController? mealTitle;
-  TextEditingController? mealType;
+  TextEditingController mealTitle = TextEditingController();
+  TextEditingController mealTime = TextEditingController();
+  TextEditingController mealDesc = TextEditingController();
+  TextEditingController mealVideUrl = TextEditingController();
+
+  String? typeMeal;
+  String? budgetMeal;
 
 
-  _clearImput(){
-    mealTitle!.clear();
-    mealType!.clear();
+  _clearInputs(){
+    mealTitle.clear();
+    mealTime.clear();
+    mealDesc.clear();
+    mealVideUrl.clear();
   }
 
 
   Future uploadMealPic(File pickedImage,String title) async {
-
-    print('uploadss');
 
     var file =await pickedImage.readAsBytes();
 
@@ -49,6 +52,7 @@ class MealController extends GetxController{
       Get.snackbar(
         "Error",
         "image not uploaded ${e.toString()}",
+          snackPosition: SnackPosition.BOTTOM
       );
       return;
     }
@@ -68,8 +72,8 @@ class MealController extends GetxController{
     }
     catch(e){
       Get.snackbar(
-        "Error",
-        "image not uploaded ${e}",
+          'Error', 'Merci de choisir une image',
+          snackPosition: SnackPosition.BOTTOM,
       );
       return false;
     }
@@ -81,13 +85,22 @@ class MealController extends GetxController{
             priceRange: meal.priceRange,
             timeToMake: meal.timeToMake,
             photoURL: mealPhotoUrl,
-            mealType: meal.mealType
+            mealType: meal.mealType,
+              youtubeLink: meal.youtubeLink,
+            description: meal.description
           ));
-      _clearImput();
+      _clearInputs();
+      Get.snackbar(
+        'Succès', 'le repas a été ajouté avec succès',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return true;
     }
     on FirebaseAuthException catch(e){
-      Get.snackbar('Error', '${e.code}');
+      Get.snackbar(
+          'Error', 'Merci de choisir une image',
+          snackPosition: SnackPosition.BOTTOM
+      );
       return false;
     }
   }
@@ -99,4 +112,17 @@ class MealController extends GetxController{
     log('abs path ${obsImageTho.value}');
   }
 
+  Future<List<MealModel>> getListOfMeals() async{
+
+    List <MealModel> _meals = [];
+     await MealModel().mealRef.orderBy('at',descending: true).get().then((snapshot) => snapshot.docs.forEach((mealData) {
+        _meals.add(mealData.data());
+    }));
+
+    return _meals;
+  }
+
+  Future<void> deleteMeal(String? id) async {
+    await MealModel().mealRef.doc(id!).delete();
+  }
 }

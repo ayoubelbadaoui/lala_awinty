@@ -10,6 +10,7 @@ class AppInput extends StatelessWidget {
   bool? obscureText;
   TextInputType? textInputType;
   Widget? suffix;
+  int? height;
   AppInput(
       {required this.hint,
       this.prefixIcon,
@@ -18,7 +19,8 @@ class AppInput extends StatelessWidget {
       required this.validator,
       this.initialValue,this.obscureText,
         this.textInputType,
-        this.suffix
+        this.suffix,
+        this.height
       });
 
   @override
@@ -26,9 +28,11 @@ class AppInput extends StatelessWidget {
     return FractionallySizedBox(
       widthFactor: widthFactor ?? 1,
       child: TextFormField(
+        minLines: height ?? 1,
+        maxLines: height == null ? 1 : null,
         controller: controller,
         validator: validator,
-        keyboardType: textInputType??TextInputType.text,
+        keyboardType: height != null ? (TextInputType.multiline) : textInputType??TextInputType.text,
         initialValue: initialValue,
         obscureText: obscureText??false,
         style: const TextStyle(
@@ -36,7 +40,7 @@ class AppInput extends StatelessWidget {
             fontSize: 15,
             fontWeight: FontWeight.w400,
             color: Color(0XFF263238)),
-        decoration: InputDecoration(
+             decoration: InputDecoration(
             border: OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(40.0),
