@@ -21,8 +21,8 @@ class MealController extends GetxController{
   TextEditingController mealDesc = TextEditingController();
   TextEditingController mealVideUrl = TextEditingController();
 
-  String? typeMeal;
-  String? budgetMeal;
+  String? typeMeal = 'Déjeuner';
+  String? budgetMeal = '20-30';
 
 
   _clearInputs(){
@@ -81,13 +81,13 @@ class MealController extends GetxController{
     try{
       MealModel().mealRef.add(
           MealModel(
-            title: meal.title,
-            priceRange: meal.priceRange,
-            timeToMake: meal.timeToMake,
-            photoURL: mealPhotoUrl,
-            mealType: meal.mealType,
-              youtubeLink: meal.youtubeLink,
-            description: meal.description
+            title: meal.title!.trim(),
+            priceRange: meal.priceRange!.trim(),
+            timeToMake: meal.timeToMake!.trim(),
+            photoURL: mealPhotoUrl!.trim(),
+            mealType: meal.mealType!.trim(),
+              youtubeLink: meal.youtubeLink!.trim(),
+            description: meal.description!.trim()
           ));
       _clearInputs();
       Get.snackbar(
