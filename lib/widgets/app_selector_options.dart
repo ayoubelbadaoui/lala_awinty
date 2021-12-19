@@ -6,8 +6,9 @@ class AppSelectorOption extends StatefulWidget {
 
   final List<String> items;
   String? storeValueOnChange;
+  String? value;
 
-  AppSelectorOption({required this.items,this.storeValueOnChange});
+  AppSelectorOption({required this.items,this.storeValueOnChange,this.value});
 
   @override
   State<AppSelectorOption> createState() => _AppSelectorOptionState();
@@ -18,7 +19,7 @@ class _AppSelectorOptionState extends State<AppSelectorOption> {
   @override
   void initState() {
     // TODO: implement initState
-    dropdownValue = widget.items.first;
+    dropdownValue = widget.value ??  widget.items.first;
     super.initState();
   }
 

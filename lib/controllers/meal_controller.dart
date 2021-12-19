@@ -36,15 +36,13 @@ class MealController extends GetxController{
   Future uploadMealPic(File pickedImage,String title) async {
 
     var file =await pickedImage.readAsBytes();
-
-
     try{
       await firebase_storage.FirebaseStorage.instance
-          .ref("/meals-photos/${title.toString().removeAllWhitespace.trim()}")
+          .ref("/meals-photos/${pickedImage.path.removeAllWhitespace.trim()}")
           .putData(file);
 
       String mealPhotoUrl = await firebase_storage.FirebaseStorage.instance
-          .ref("/meals-photos/${title.toString().removeAllWhitespace.trim()}").getDownloadURL();
+          .ref("/meals-photos/${pickedImage.path.removeAllWhitespace.trim()}").getDownloadURL();
 
       return mealPhotoUrl;
     }
@@ -58,7 +56,32 @@ class MealController extends GetxController{
     }
   }
 
+  Future<void> editMeal(String mealId,MealModel meal)async {
 
+   try{
+     await  MealModel().mealRef.doc(mealId).update({
+       'title': meal.title,
+       'priceRange': meal.priceRange,
+       'timeToMake': meal.timeToMake,
+       //'photoURL': meal.photoURL,
+       'typeMeal': meal.mealType,
+       'at':meal.at,
+       'youtubeLink':meal.youtubeLink,
+       'description':meal.description,
+     });
+     Get.snackbar(
+       'Succès', 'le repas a été modifié avec succès',
+       snackPosition: SnackPosition.BOTTOM,
+     );
+   }
+   on FirebaseAuthException catch(e){
+     Get.snackbar(
+         'Error', e.message.toString(),
+         snackPosition: SnackPosition.BOTTOM
+     );
+   }
+
+  }
 
 
   Future addNewMeal(MealModel meal) async{
@@ -105,7 +128,6 @@ class MealController extends GetxController{
     }
   }
 
-
   Future<void> pickImageMeal() async{
     XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     obsImageTho.value= image!.path;
@@ -120,6 +142,12 @@ class MealController extends GetxController{
     }));
 
     return _meals;
+  }
+
+  Future<MealModel> getMealWithID(String mealId) async{
+    MealModel _meal = MealModel();
+    _meal = await MealModel().mealRef.doc(mealId).get().then((value) => value.data()!);
+    return _meal;
   }
 
   Future<void> deleteMeal(String? id) async {

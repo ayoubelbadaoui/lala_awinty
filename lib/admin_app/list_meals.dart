@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lala_awinty/admin_app/edi_meal_ui.dart';
 import 'package:lala_awinty/constants/controllers.dart';
 import 'package:lala_awinty/models/meal.dart';
 import 'package:lala_awinty/widgets/loading_widget.dart';
@@ -75,6 +76,22 @@ class _ListMealsState extends State<ListMeals> {
                                   ),
                                 ]
                               );
+                            },
+                          ),  GestureDetector(
+                            child:const Icon(Icons.edit),
+                            onTap: () async{
+                             //show edit form for clicked meal :
+                              await Get.bottomSheet(
+                                 SizedBox(
+                                    child: EditMealUI(idMeal: snapshot.data![index].id!,),
+                                    height: Get.height * .9,
+                                ),
+                                isScrollControlled: true
+                              ).then((value) {
+                                setState(() {
+
+                                });
+                              });
                             },
                           ),
                         ],
