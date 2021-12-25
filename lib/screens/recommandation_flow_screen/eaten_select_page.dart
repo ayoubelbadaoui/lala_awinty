@@ -1,5 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lala_awinty/constants/controllers.dart';
+import 'package:lala_awinty/models/meal.dart';
+import 'package:lala_awinty/screens/recommandation_flow_screen/widgets/SuggestionWidget.dart';
+import 'package:lala_awinty/widgets/loading_widget.dart';
 import 'package:lala_awinty/widgets/primary_button.dart';
 
 class SelectEatenMealPage extends StatelessWidget {
@@ -7,94 +13,65 @@ class SelectEatenMealPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: Get.height * .1,
-        ),
-        Text(
-          'Qu\'as-tu mangé hier soir ?',
-          style: TextStyle(
-              fontWeight: FontWeight.w700, fontSize: Get.width * .055),
-        ),
-        SizedBox(
-          height: Get.height * .02,
-        ),
-        Expanded(
-          child: FractionallySizedBox(
-            widthFactor: .9,
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisExtent: Get.height * .3,
-              ),
-              itemCount: 4,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  //margin: EdgeInsets.all(5),
-                  width: 500,
-                  height: 700,
-                  // color: Colors.red,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            //borderRadius: BorderRadius.circular(200),
-                            image: DecorationImage(
-                                image: NetworkImage(testImg), fit: BoxFit.fill),
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: Offset(0, 10),
-                                  blurRadius: 30,
-                                  color: Colors.black.withOpacity(.25))
-                            ]),
-                      ),
-                      SizedBox(
-                        height: Get.height * .02,
-                      ),
-                      Text(
-                        'Lmakla',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: Get.width * .045),
-                      ),
-                      Text(
-                        '30 min',
-                        style: TextStyle(fontWeight: FontWeight.w400),
-                      ),
-                      SizedBox(
-                        height: Get.height * .01,
-                      ),
-                    ],
-                  ),
-                );
-              },
-              //scrollDirection: Axis.horizontal
-            ),
-          ),
-        ),
-        Text(
-          'Aucune de ces récommendations',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          height: Get.height * .01,
-        ),
-        AppPrimaryButton(
-          onPressed: null,
-          text: 'Suivant',
-          width: 300,
-        ),
-        SizedBox(
-          height: Get.height * .02,
-        ),
-      ],
-    );
+    return FutureBuilder<List<MealModel>>(
+        future: mealController.getListOfMeals(),
+        builder: (context, AsyncSnapshot<List<MealModel>> snapshot) {
+          if (snapshot.hasData) {
+            log('data size in meals ${snapshot.data!.length.toString()}');
+            return Column(
+              children: [
+                SizedBox(
+                  height: Get.height * .1,
+                ),
+                Text(
+                  'Qu\'as-tu mangé hier soir ?',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: Get.width * .055),
+                ),
+                SizedBox(
+                  height: Get.height * .02,
+                ),
+                Expanded(
+                    child: PageView(
+                  controller: recommandationFlowController
+                      .pageControllerSuggestion.value,
+                  children: snapshot.data!.map((MealModel meal) {
+                    return SuggestionWidget(
+                      title: meal.title!,
+                      imageLink: meal.photoURL!,
+                      timeTomake: meal.timeToMake!,
+                      // subtitle: Text(document.title!),
+                    );
+                  }).toList(),
+                )),
+                Text(
+                  'Aucune de ces récommendations',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: Get.height * .01,
+                ),
+                AppPrimaryButton(
+                  onPressed: null,
+                  text: 'Suivant',
+                  width: 300,
+                ),
+                SizedBox(
+                  height: Get.height * .02,
+                ),
+              ],
+            );
+          }
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Something went wrong'),
+            );
+          }
+          return Center(
+            child: LoadingWidget(),
+          );
+        });
   }
 }
 

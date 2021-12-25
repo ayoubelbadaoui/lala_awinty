@@ -28,6 +28,9 @@ class MealBudgetPage extends StatelessWidget {
                 ),
                 AppSelectorOption(
                   items: <String>['20-30', '30-50', '50-70', '50-100'],
+                  onChange: (value) {
+                    recommandationsController.priceRange.value = value;
+                  },
                 ),
                 SizedBox(
                   height: Get.height * .05,
@@ -37,6 +40,9 @@ class MealBudgetPage extends StatelessWidget {
                 ),
                 AppSelectorOption(
                   items: <String>['Déjeuner', 'Dîner'],
+                  onChange: (value) {
+                    recommandationsController.mealType.value = value;
+                  },
                 ),
                 SizedBox(
                   height: Get.height * .07,

@@ -99,7 +99,11 @@ class AuthController extends GetxController {
     password.clear();
   }
 
-  Future<bool> checkIfUserIsAdmin() async{
-    return await UserModel().usersRef.doc(auth.currentUser!.uid).get().then((snapshot) => snapshot.data()!.admin!);
+  Future<bool> checkIfUserIsAdmin() async {
+    return await UserModel()
+        .usersRef
+        .doc(auth.currentUser!.uid)
+        .get()
+        .then((snapshot) => snapshot.data()!.admin!);
   }
 }

@@ -52,23 +52,23 @@ class _IntroScreenState extends State<IntroScreen> {
       key: introKey,
       pages: [
         PageViewModel(
-          title: "Welcome to Karam",
+          title: "Welcome to LALA AWINTY",
           body:
               "Vous êtes altruiste, aider les exclus sociaux cela fait partie de vos principes de vie.",
           image: _buildImage('1'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Charity",
+          title: "Best recommendations",
           body:
-              "Karam est une application qui permet de générer des fonds pour optimiser le travail de l’Association Maghreb Secours (AMS).",
+              "une meilleure façon d'obtenir des recommandations alimentaires.",
           image: _buildImage('2'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Karam love",
+          title: "Rejoignez-nous",
           body:
-              "Si vous voulez augmenter votre Karma, partagez au maximum cette application avec vos contacts. Profitez du chat pour vous faire des nouveaux amis.",
+              "si vous souhaitez différentes suggestions de repas, nous sommes là pour vous aider à tirer le meilleur parti de votre mode de vie alimentaire .",
           image: _buildImage('3'),
           decoration: pageDecoration,
         ),

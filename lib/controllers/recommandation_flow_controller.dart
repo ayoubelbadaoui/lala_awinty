@@ -9,10 +9,12 @@ class RecommandationFlowController extends GetxController {
 
   Rx<PageController> pageController = PageController().obs;
 
+  Rx<PageController> pageControllerSuggestion = PageController().obs;
+
   goToNextPage() {
     progress.value = Get.width;
-    pageController.value
-        .nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+    pageController.value.nextPage(
+        duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 
   bool goToBackPage() {
@@ -27,5 +29,9 @@ class RecommandationFlowController extends GetxController {
     }
   }
 
-
+  //Function to go to next probable already eaten food :
+  goToNextSuggestion() {
+    pageControllerSuggestion.value.nextPage(
+        duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+  }
 }
