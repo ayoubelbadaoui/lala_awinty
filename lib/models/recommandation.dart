@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lala_awinty/constants/enums.dart';
 import 'package:lala_awinty/constants/enums.dart';
+import 'package:lala_awinty/constants/firebase.dart';
 
 class RecommandationMDL{
 
@@ -48,7 +49,7 @@ class RecommandationMDL{
     return {
       'title': title,
       'priceRange': priceRange,
-      'rating': rating,
+      'rating': '4.5',
       'photoURL': photoURL,
       'timeToMake': timeToMake,
       'description': description,
@@ -56,7 +57,7 @@ class RecommandationMDL{
   }
 
   final recommandationRef = FirebaseFirestore.instance
-      .collection('recommandations')
+      .collection('recommandations').doc(auth.currentUser!.uid).collection('recommandations')
       .withConverter<RecommandationMDL>(
     fromFirestore: (snapshot, _) => RecommandationMDL.fromJson(snapshot.data()!),
     toFirestore: (user, _) => user.toJson(),

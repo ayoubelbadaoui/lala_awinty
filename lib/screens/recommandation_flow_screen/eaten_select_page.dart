@@ -13,9 +13,9 @@ class SelectEatenMealPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<MealModel>>(
+    return FutureBuilder<List<MealMDL>>(
         future: mealController.getListOfMeals(),
-        builder: (context, AsyncSnapshot<List<MealModel>> snapshot) {
+        builder: (context, AsyncSnapshot<List<MealMDL>> snapshot) {
           if (snapshot.hasData) {
             log('data size in meals ${snapshot.data!.length.toString()}');
             return Column(
@@ -32,30 +32,51 @@ class SelectEatenMealPage extends StatelessWidget {
                   height: Get.height * .02,
                 ),
                 Expanded(
-                    child: PageView(
-                  controller: recommandationFlowController
-                      .pageControllerSuggestion.value,
-                  children: snapshot.data!.map((MealModel meal) {
-                    return SuggestionWidget(
-                      title: meal.title!,
-                      imageLink: meal.photoURL!,
-                      timeTomake: meal.timeToMake!,
-                      // subtitle: Text(document.title!),
-                    );
-                  }).toList(),
-                )),
-                Text(
-                  'Aucune de ces récommendations',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                    child: Obx(() => PageView(
+                          controller: recommandationFlowController
+                              .pageControllerSuggestion.value,
+                          children: snapshot.data!.map((MealMDL meal) {
+                            return SuggestionWidget(
+                              title: meal.title!,
+                              imageLink: meal.photoURL!,
+                              timeTomake: meal.timeToMake!,
+                              idMeal: meal.id!,
+                              isSelected:
+                                  recommandationFlowController.isSelected.value,
+                            );
+                          }).toList(),
+                        ))),
+                GestureDetector(
+                  onTap: () {
+                    if (!recommandationFlowController.isSelected.value) {
+                      recommandationFlowController.goToNextSuggestion();
+                    } else {
+                      Get.snackbar('Attention',
+                          'Merci de déselectioner la repas sélectionné');
+                    }
+                  },
+                  child: Text(
+                    'Non ce n\'est pas ce que j\'ai mangé',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 SizedBox(
                   height: Get.height * .01,
                 ),
-                AppPrimaryButton(
-                  onPressed: null,
-                  text: 'Suivant',
-                  width: 300,
+                Obx(
+                  () => AppPrimaryButton(
+                    onPressed: () {
+                      if (recommandationFlowController.isSelected.value) {
+                        recommandationFlowController.goToNextPage();
+                      } else {
+                        Get.snackbar(
+                            'Attention', 'Merci de selectioner une repas');
+                      }
+                    },
+                    text: 'Suivant',
+                    color: recommandationFlowController.colorNextButtom.value,
+                  ),
                 ),
                 SizedBox(
                   height: Get.height * .02,

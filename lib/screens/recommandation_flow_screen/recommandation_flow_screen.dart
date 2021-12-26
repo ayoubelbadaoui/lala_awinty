@@ -4,6 +4,7 @@ import 'package:lala_awinty/constants/colors.dart';
 import 'package:lala_awinty/constants/controllers.dart';
 import 'package:lala_awinty/screens/recommandation_flow_screen/budget_type_meal_screen.dart';
 import 'package:lala_awinty/screens/recommandation_flow_screen/eaten_select_page.dart';
+import 'package:lala_awinty/screens/recommandations_screen/tabs/ready_screen.dart';
 import 'package:lala_awinty/widgets/app_input.dart';
 import 'package:lala_awinty/widgets/app_selector_options.dart';
 import 'package:lala_awinty/widgets/custom_text.dart';
@@ -37,7 +38,11 @@ class RecommandationFollowScreen extends StatelessWidget {
               Expanded(
                 child: PageView(
                   controller: recommandationFlowController.pageController.value,
-                  children: <Widget>[MealBudgetPage(), SelectEatenMealPage()],
+                  children: <Widget>[
+                    MealBudgetPage(),
+                    SelectEatenMealPage(),
+                    ReadyMealRecommandationScreen()
+                  ],
                 ),
               ),
             ],

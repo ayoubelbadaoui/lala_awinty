@@ -15,7 +15,7 @@ import 'package:lala_awinty/widgets/secondary_button.dart';
 final _formKey = GlobalKey<FormState>();
 
 
-MealModel _meal = MealModel();
+MealMDL _meal = MealMDL();
 class AdminApp extends StatelessWidget {
   const AdminApp({Key? key}) : super(key: key);
 
@@ -185,7 +185,7 @@ class AdminApp extends StatelessWidget {
                         onPressed: () async{
                           if (_formKey.currentState!.validate()) {
                             showLoading();
-                            await mealController.addNewMeal(MealModel(
+                            await mealController.addNewMeal(MealMDL(
                                 title: _meal.title,
                                 priceRange:mealController.budgetMeal,
                                 timeToMake:_meal.timeToMake,

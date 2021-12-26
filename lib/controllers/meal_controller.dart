@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -10,13 +11,13 @@ import 'package:lala_awinty/models/meal.dart';
 class MealController extends GetxController {
   static MealController instance = Get.find();
 
-  Rx<MealModel> mealModel = MealModel().obs;
+  Rx<MealMDL> mealModel = MealMDL().obs;
   final ImagePicker _picker = ImagePicker();
   Rx<String> obsImageTho = "".obs;
 
-  List<MealModel> lisM = [];
+  List<MealMDL> lisM = [];
 
-  List<MealModel> allMeals = <MealModel>[].obs;
+  List<MealMDL> allMeals = <MealMDL>[].obs;
 
   TextEditingController mealTitle = TextEditingController();
   TextEditingController mealTime = TextEditingController();
@@ -52,9 +53,9 @@ class MealController extends GetxController {
     }
   }
 
-  Future<void> editMeal(String mealId, MealModel meal) async {
+  Future<void> editMeal(String mealId, MealMDL meal) async {
     try {
-      await MealModel().mealRef.doc(mealId).update({
+      await MealMDL().mealRef.doc(mealId).update({
         'title': meal.title,
         'priceRange': meal.priceRange,
         'timeToMake': meal.timeToMake,
@@ -75,7 +76,7 @@ class MealController extends GetxController {
     }
   }
 
-  Future addNewMeal(MealModel meal) async {
+  Future addNewMeal(MealMDL meal) async {
     File file = File(obsImageTho.value);
 
     String? mealPhotoUrl;
@@ -92,14 +93,19 @@ class MealController extends GetxController {
     }
 
     try {
-      MealModel().mealRef.add(MealModel(
-          title: meal.title!.trim(),
-          priceRange: meal.priceRange!.trim(),
-          timeToMake: meal.timeToMake!.trim(),
-          photoURL: mealPhotoUrl!.trim(),
-          mealType: meal.mealType!.trim(),
-          youtubeLink: meal.youtubeLink!.trim(),
-          description: meal.description!.trim()));
+      String idToAdd = '';
+      MealMDL()
+          .mealRef
+          .add(MealMDL(
+              title: meal.title!.trim(),
+              priceRange: meal.priceRange!.trim(),
+              timeToMake: meal.timeToMake!.trim(),
+              photoURL: mealPhotoUrl!.trim(),
+              mealType: meal.mealType!.trim(),
+              youtubeLink: meal.youtubeLink!.trim(),
+              description: meal.description!.trim()))
+          .then((value) => idToAdd = value.id);
+      _addIdToMeal(idToAdd);
       _clearInputs();
       Get.snackbar(
         'Succès',
@@ -114,16 +120,28 @@ class MealController extends GetxController {
     }
   }
 
+  _addIdToMeal(idToAdd) {
+    CollectionReference users = FirebaseFirestore.instance.collection('meals');
+
+    Future<void> updateUser() async {
+      users
+          .doc(idToAdd)
+          .update({'id_meal': idToAdd})
+          .then((value) => print("User Updated"))
+          .catchError((error) => print("Failed to update user: $error"));
+    }
+  }
+
   Future<void> pickImageMeal() async {
     XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     obsImageTho.value = image!.path;
     log('abs path ${obsImageTho.value}');
   }
 
-  Future<List<MealModel>> getListOfMeals() async {
-    List<MealModel> _meals = [];
+  Future<List<MealMDL>> getListOfMeals() async {
+    List<MealMDL> _meals = [];
 
-    await MealModel()
+    await MealMDL()
         .mealRef
         .orderBy('at', descending: true)
         .get()
@@ -135,9 +153,9 @@ class MealController extends GetxController {
     return _meals;
   }
 
-  Future<MealModel> getMealWithID(String mealId) async {
-    MealModel _meal = MealModel();
-    _meal = await MealModel()
+  Future<MealMDL> getMealWithID(String mealId) async {
+    MealMDL _meal = MealMDL();
+    _meal = await MealMDL()
         .mealRef
         .doc(mealId)
         .get()
@@ -146,6 +164,6 @@ class MealController extends GetxController {
   }
 
   Future<void> deleteMeal(String? id) async {
-    await MealModel().mealRef.doc(id!).delete();
+    await MealMDL().mealRef.doc(id!).delete();
   }
 }

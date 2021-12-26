@@ -17,9 +17,9 @@ class _ListMealsState extends State<ListMeals> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title:const Text('List des repas'),),
-      body: FutureBuilder<List<MealModel>>(
+      body: FutureBuilder<List<MealMDL>>(
         future: mealController.getListOfMeals(),
-        builder: (context,AsyncSnapshot<List<MealModel>> snapshot){
+        builder: (context,AsyncSnapshot<List<MealMDL>> snapshot){
           if(snapshot.hasError){
             return const Center(
               child: Text('No internet'),

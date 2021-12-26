@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lala_awinty/constants/controllers.dart';
 import 'package:lala_awinty/models/recommandation.dart';
 
-class MealModel extends RecommandationMDL {
-  MealModel({
+class MealMDL extends RecommandationMDL {
+  MealMDL({
     String? title,
     String? priceRange,
     String? timeToMake,
@@ -24,7 +24,7 @@ class MealModel extends RecommandationMDL {
             description: description,
             id: id);
 
-  MealModel.fromJson(Map<String, Object?> json, String id)
+  MealMDL.fromJson(Map<String, Object?> json, String id)
       : this(
             title: json['title']! as String,
             priceRange: json['priceRange']! as String,
@@ -50,10 +50,25 @@ class MealModel extends RecommandationMDL {
     };
   }
 
+  MealMDL.fromDocumentSnapshot(
+      DocumentSnapshot documentSnapshot,
+      ){
+    id = documentSnapshot.id;
+    at = documentSnapshot.get('at');
+    timeToMake = documentSnapshot.get('timeToMake');
+    title = documentSnapshot.get('title');
+    priceRange = documentSnapshot.get('priceRange');
+    rating = '4.5';
+    photoURL = documentSnapshot.get('photoURL');
+    youtubeLink = documentSnapshot.get('youtubeLink');
+    description = documentSnapshot.get('description');
+    mealType = documentSnapshot.get('typeMeal');
+  }
+
   final mealRef =
-      FirebaseFirestore.instance.collection('meals').withConverter<MealModel>(
+      FirebaseFirestore.instance.collection('meals').withConverter<MealMDL>(
             fromFirestore: (snapshot, _) =>
-                MealModel.fromJson(snapshot.data()!, snapshot.id),
+                MealMDL.fromJson(snapshot.data()!, snapshot.id),
             toFirestore: (meal, _) => meal.toJson(),
           );
 }

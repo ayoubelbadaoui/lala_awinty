@@ -16,7 +16,7 @@ import 'package:lala_awinty/widgets/secondary_button.dart';
 final _formKey = GlobalKey<FormState>();
 
 
-MealModel _meal = MealModel();
+MealMDL _meal = MealMDL();
 
 class EditMealUI extends StatelessWidget {
 
@@ -30,7 +30,7 @@ class EditMealUI extends StatelessWidget {
       appBar: AppBar(
         title: Text('Modifier une repas'),
       ),
-        body: FutureBuilder<MealModel>(
+        body: FutureBuilder<MealMDL>(
           future: mealController.getMealWithID(idMeal),
           builder: (context,snapshot){
             if(snapshot.hasError){
@@ -43,7 +43,7 @@ class EditMealUI extends StatelessWidget {
             }
             if (snapshot.connectionState == ConnectionState.done){
 
-              MealModel? _mealData = snapshot.data;
+              MealMDL? _mealData = snapshot.data;
 
               return SizedBox(
                 width: Get.width,
@@ -202,7 +202,7 @@ class EditMealUI extends StatelessWidget {
                               onPressed: () async{
                                 if (_formKey.currentState!.validate()) {
                                   showLoading();
-                                  await mealController.editMeal(idMeal,MealModel(
+                                  await mealController.editMeal(idMeal,MealMDL(
                                       title: _meal.title,
                                       priceRange:mealController.budgetMeal,
                                       timeToMake:_meal.timeToMake,
