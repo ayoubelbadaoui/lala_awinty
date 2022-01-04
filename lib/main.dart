@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lala_awinty/controllers/auth_controller.dart';
 import 'package:lala_awinty/controllers/recommandation_controller.dart';
 import 'constants/firebase.dart';
 import 'constants/theme.dart';
 import 'controllers/meal_controller.dart';
 import 'controllers/recommandation_flow_controller.dart';
-import 'core/firebase_init.dart';
-import 'screens/introduction_screen.dart';
 import 'widgets/loading_widget.dart';
 
 void main() async {
@@ -20,14 +16,18 @@ void main() async {
   Get.put(RecommandationsController());
   Get.put(RecommandationFlowController());
   Get.put(MealController());
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Lala awnity app',
         theme: appTheme(context),
         home: Scaffold(

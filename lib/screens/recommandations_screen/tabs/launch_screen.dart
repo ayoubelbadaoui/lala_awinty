@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lala_awinty/constants/colors.dart';
 import 'package:lala_awinty/constants/controllers.dart';
 import 'package:lala_awinty/models/recommandation.dart';
-import 'package:lala_awinty/screens/recommandation_flow_screen/recommandation_flow_screen.dart';
 import 'package:lala_awinty/screens/recommandations_screen/widgets/meal_showcase.dart';
 import 'package:lala_awinty/widgets/loading_widget.dart';
 
@@ -53,6 +50,8 @@ class LaunchScreen extends StatelessWidget {
                     priceRange: snapshot.data![index].priceRange!,
                     title: snapshot.data![index].title!,
                     rating: snapshot.data![index].rating!,
+                    youtubeLink: snapshot.data![index].youtubeLink!,
+                    desc: snapshot.data![index].description!,
                   );
                 },
               itemCount: snapshot.data!.length,

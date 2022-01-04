@@ -1,7 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lala_awinty/constants/enums.dart';
-import 'package:lala_awinty/constants/enums.dart';
-import 'package:lala_awinty/constants/firebase.dart';
 
 class RecommandationMDL{
 
@@ -55,12 +52,5 @@ class RecommandationMDL{
       'description': description,
     };
   }
-
-  final recommandationRef = FirebaseFirestore.instance
-      .collection('recommandations').doc(auth.currentUser!.uid).collection('recommandations')
-      .withConverter<RecommandationMDL>(
-    fromFirestore: (snapshot, _) => RecommandationMDL.fromJson(snapshot.data()!),
-    toFirestore: (user, _) => user.toJson(),
-  );
 
 }

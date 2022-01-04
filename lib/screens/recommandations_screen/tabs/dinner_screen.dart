@@ -19,7 +19,7 @@ class DinnerScreen extends StatelessWidget {
           builder: (BuildContext context,
               AsyncSnapshot<List<RecommandationMDL>> snapshot) {
             if (snapshot.hasError) {
-              return  Text('Something went wrong ${snapshot.error.toString()}');
+              return Text('Something went wrong ${snapshot.error.toString()}');
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: LoadingWidget());
@@ -43,14 +43,16 @@ class DinnerScreen extends StatelessWidget {
                     )),
               );
             }
-            return  ListView.builder(
-              itemBuilder: (BuildContext context,int index){
+            return ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
                 return MealShowCase(
                   timeTomake: snapshot.data![index].timeToMake!,
                   imageUrl: snapshot.data![index].photoURL!,
                   priceRange: snapshot.data![index].priceRange!,
                   title: snapshot.data![index].title!,
                   rating: snapshot.data![index].rating!,
+                  youtubeLink: snapshot.data![index].youtubeLink!,
+                  desc: snapshot.data![index].description!,
                 );
               },
               itemCount: snapshot.data!.length,

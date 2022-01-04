@@ -54,7 +54,7 @@ class _IntroScreenState extends State<IntroScreen> {
         PageViewModel(
           title: "Welcome to LALA AWINTY",
           body:
-              "Vous êtes altruiste, aider les exclus sociaux cela fait partie de vos principes de vie.",
+              "une meilleure façon d'obtenir et donner des recommandations alimentaires.",
           image: _buildImage('1'),
           decoration: pageDecoration,
         ),

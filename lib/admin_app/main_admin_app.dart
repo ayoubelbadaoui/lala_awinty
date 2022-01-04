@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lala_awinty/admin_app/list_meals.dart';
 import 'package:lala_awinty/constants/colors.dart';
 import 'package:lala_awinty/constants/controllers.dart';
+import 'package:lala_awinty/constants/firebase.dart';
 import 'package:lala_awinty/helpers/showLoading.dart';
 import 'package:lala_awinty/models/meal.dart';
 import 'package:lala_awinty/widgets/app_input.dart';
@@ -14,21 +15,28 @@ import 'package:lala_awinty/widgets/secondary_button.dart';
 
 final _formKey = GlobalKey<FormState>();
 
-
 MealMDL _meal = MealMDL();
+
 class AdminApp extends StatelessWidget {
   const AdminApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: (){
-            Get.to(const ListMeals());
-          }, icon:const Icon(Icons.menu))
-        ],
-      ),
+        appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Get.to(const ListMeals());
+                },
+                icon: const Icon(Icons.menu)),
+            IconButton(
+                onPressed: () async {
+                  await auth.signOut();
+                },
+                icon: const Icon(Icons.logout))
+          ],
+        ),
         body: SizedBox(
           width: Get.width,
           child: SingleChildScrollView(
@@ -53,7 +61,7 @@ class AdminApp extends StatelessWidget {
                   FractionallySizedBox(
                     widthFactor: .9,
                     child: AppInput(
-                      controller: mealController.mealTitle,
+                        controller: mealController.mealTitle,
                         hint: 'Titre de repas',
                         validator: (String? titleMeal) {
                           if (titleMeal!.isEmpty) {
@@ -68,7 +76,7 @@ class AdminApp extends StatelessWidget {
                   FractionallySizedBox(
                     widthFactor: .9,
                     child: AppInput(
-                      controller: mealController.mealTime,
+                        controller: mealController.mealTime,
                         textInputType: TextInputType.number,
                         hint: 'estimation pour la repas en Min',
                         validator: (String? titleMeal) {
@@ -78,7 +86,6 @@ class AdminApp extends StatelessWidget {
                           _meal.timeToMake = titleMeal;
                         }),
                   ),
-
                   SizedBox(
                     height: Get.height * .03,
                   ),
@@ -91,8 +98,7 @@ class AdminApp extends StatelessWidget {
                         validator: (String? youtubeLink) {
                           if (youtubeLink!.isEmpty) {
                             return 'Merci d\'écrire lien de youtube pour la repas';
-                          }
-                          else  if (!youtubeLink.isURL) {
+                          } else if (!youtubeLink.isURL) {
                             return 'Merci d\'écrire un lien valid \'https://..\'';
                           }
                           _meal.youtubeLink = youtubeLink;
@@ -106,7 +112,7 @@ class AdminApp extends StatelessWidget {
                     child: AppInput(
                         controller: mealController.mealDesc,
                         textInputType: TextInputType.number,
-                        height:6,
+                        height: 6,
                         hint: 'Description',
                         validator: (String? description) {
                           if (description!.isEmpty) {
@@ -127,7 +133,12 @@ class AdminApp extends StatelessWidget {
                   FractionallySizedBox(
                     widthFactor: .9,
                     child: AppSelectorOption(
-                      items: const <String>['20-30', '30-50', '50-70', '50-100'],
+                      items: const <String>[
+                        '20-30',
+                        '30-50',
+                        '50-70',
+                        '50-100'
+                      ],
                       storeValueOnChange: 'budget_meal',
                     ),
                   ),
@@ -150,16 +161,16 @@ class AdminApp extends StatelessWidget {
                   SizedBox(
                     height: Get.height * .05,
                   ),
-
                   SecondaryButton(
                       width: 300,
-                      onPressed: () async => await mealController.pickImageMeal(),
+                      onPressed: () async =>
+                          await mealController.pickImageMeal(),
                       text: 'Choisir la photo de repas'),
                   SizedBox(
                     height: Get.height * .05,
                   ),
                   Obx(
-                        () => Container(
+                    () => Container(
                       width: Get.width * .9,
                       height: 200,
                       decoration: BoxDecoration(
@@ -170,10 +181,10 @@ class AdminApp extends StatelessWidget {
                           image: mealController.obsImageTho.value == ''
                               ? null
                               : DecorationImage(
-                              image: FileImage(
-                                File(mealController.obsImageTho.value),
-                              ),
-                              fit: BoxFit.cover)),
+                                  image: FileImage(
+                                    File(mealController.obsImageTho.value),
+                                  ),
+                                  fit: BoxFit.cover)),
                     ),
                   ),
                   SizedBox(
@@ -182,17 +193,16 @@ class AdminApp extends StatelessWidget {
                   Center(
                     child: AppPrimaryButton(
                         width: 300,
-                        onPressed: () async{
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             showLoading();
                             await mealController.addNewMeal(MealMDL(
                                 title: _meal.title,
-                                priceRange:mealController.budgetMeal,
-                                timeToMake:_meal.timeToMake,
+                                priceRange: mealController.budgetMeal,
+                                timeToMake: _meal.timeToMake,
                                 mealType: mealController.typeMeal,
-                              youtubeLink: _meal.youtubeLink,
-                              description: _meal.description
-                            ));
+                                youtubeLink: _meal.youtubeLink,
+                                description: _meal.description));
                             Navigator.pop(context);
                           }
                         },
